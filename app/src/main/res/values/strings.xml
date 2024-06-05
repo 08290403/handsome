@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">gymactivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="tab_layout">tabLayout</string>
+    <string name="title1">每日基础代谢</string>
+    <string name="male">性别(man/woman)</string>
+    <string name="year">年龄</string>
+    <string name="hight">身高(cm)</string>
+    <string name="weight">体重(kg)</string>
+    <string name="strong">运动指数以1.2-1.9之间的数字形容你的运动程度：1.2：没有运动；1.63：每天运动；1.9：运动员</string>
+    <string name="show">以1.2-1.9之间的数字形容你的运动程度：1.2：没有运动；1.63：每天运动；1.9：运动员</string>
+    <string name="commit">提交</string>
+    <string name="strong_show">代谢</string>
+    <string name="strong_show2">每日代谢</string>
+</resources>
