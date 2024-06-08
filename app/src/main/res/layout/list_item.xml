@@ -6,36 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/itemImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/itemTitle"
-        android:layout_width="match_parent"
+        android:layout_width="297dp"
         android:layout_height="50dp"
+        android:layout_marginStart="14dp"
         android:textColor="@android:color/holo_red_light"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/priceTitle"
+        app:layout_constraintStart_toEndOf="@+id/itemImage"
         app:layout_constraintTop_toTopOf="parent" />
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/img"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/img"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_alignParentLeft="true"-->
-<!--        android:layout_marginEnd="11dp"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/itemTitle"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <TextView
         android:id="@+id/priceTitle"
-        android:layout_width="match_parent"
+        android:layout_width="298dp"
         android:layout_height="50dp"
-        android:textSize="15sp"
+        android:layout_marginStart="14dp"
         android:text="TextView"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemImage"
         app:layout_constraintTop_toBottomOf="@+id/itemTitle" />
 
 

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +31,11 @@ public class MyAdapter extends ArrayAdapter {
         TextView title = (TextView) itemView.findViewById(R.id.itemTitle);
         TextView price = (TextView) itemView.findViewById(R.id.priceTitle);
 
-        title.setText("Title" + map.get("ItemTitle"));
-        price.setText(("price" + map.get("Price")));
+        ImageView image = (ImageView) itemView.findViewById(R.id.itemImage);
+        String imageUrl = map.get("图片");
+        Picasso.get().load(imageUrl).into(image);
+        title.setText(map.get("菜品"));
+        price.setText((map.get("热量")));
 
         return itemView;
     }

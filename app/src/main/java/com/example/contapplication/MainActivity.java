@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
             }
             result=result*strong;
         show.setText(String.valueOf(result));
+                Intent intent = new Intent(MainActivity.this, ContActivity.class);
+                intent.putExtra("result", result);
+                gg.setResult(String.valueOf(result));
             }
         });
     }

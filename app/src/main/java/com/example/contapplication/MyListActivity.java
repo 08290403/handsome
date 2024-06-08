@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 
@@ -24,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class MyListActivity extends ListActivity {
+public class MyListActivity extends ListActivity implements AdapterView.OnItemClickListener {
     public static final String TAG = "ListActivity2";
     private ArrayList<HashMap<String,String>> ListItem;
     private SimpleAdapter ListItemAdapter;
@@ -51,41 +55,52 @@ public class MyListActivity extends ListActivity {
                 super.handleMessage(msg);
             }
         };
+        getListView().setOnItemClickListener(this);
         final ArrayList<HashMap<String, String>> list = new ArrayList<>();
         Thread t = new Thread(() -> {
             try {
                 doc = Jsoup.connect("https://www.boohee.com/food/group/1?page=2").get();
                         Elements allDivs = doc.getElementsByTag("div");
 
-                        int startIdx = 27;
-                        int endIdx = 38;
-
-                        if (startIdx < allDivs.size() && endIdx < allDivs.size() && startIdx < endIdx) {
-                            for (int i = startIdx; i <= endIdx; i++) {
-                                Element div = allDivs.get(i);
-                                Elements rows = div.getElementsByTag("a");
-                                for (Element row : rows) {
-                                    System.out.println(row.text());
-                                }
-                                Elements strs = div.getElementsByTag("p");
-                                for (Element str : strs) {
-                                    System.out.println(str.text());
-                                }
-                            }
-                        } else {
-                            System.out.println("指定的索引范围超出了div元素的数量。");
-                        }
                 for (Element div : allDivs) {
-                    HashMap<String, String> map = new HashMap<>();
-                    Elements as = div.getElementsByTag("a");
-                    Elements ps = div.getElementsByTag("p");
-                    if (!as.isEmpty()) {
-                        map.put("食物名称", as.first().text());
+                    if (div.select("p").size() > 0) {
+                        HashMap<String, String> map = new HashMap<>();
+                        Element a = div.select("a").first();
+                        Element img = div.select("img").first();
+                        if (a != null) {
+                            map.put("菜品", a.text());
+                        }
+
+                        Element p = div.select("p").first();
+                        if (p != null) {
+                            map.put("热量", p.text());
+                        }
+                        if (img != null) {
+                            String imageUrl = img.absUrl("src"); // 获取图片的绝对URL
+                            map.put("图片URL", imageUrl);
+                        }
+                        if (!map.isEmpty()) {
+                            list.add(map);
+                        }
+
+
                     }
-                    if (!ps.isEmpty()) {
-                        map.put("每一百克所含热量", ps.first().text());
+                }
+                if (list.size() > 7) {
+                    // 删除前N个元素
+                    for (int i = 0; i < 7 && i < list.size(); i++) {
+                        list.remove(0);
                     }
-                    list.add(map);
+                } else {
+                    // 如果列表中的元素少于N，清空列表
+                    list.clear();
+                }
+                if (list.size() > 1) {
+                    // 删除倒数第二个元素（索引为 list.size() - 2）
+                    list.remove(list.size() - 2);
+
+                    // 删除最后一个元素（索引为 list.size() - 1）
+                    list.remove(list.size() - 1);
                 }
                 Message msg = handler.obtainMessage(9, list);
                 handler.sendMessage(msg);
@@ -102,15 +117,25 @@ public class MyListActivity extends ListActivity {
         ListItem = new ArrayList<HashMap<String,String>>();
         for(int i = 0;i < 10;i++){
             HashMap<String,String> map = new HashMap<String,String>();
-            map.put("食物名称","菜品:  "+ i );
+            map.put("菜品","菜品:  "+ i );
             map.put("热量","热量  "+i);
+            map.put("图片","图片  "+i);
             ListItem.add(map);
         }
         ListItemAdapter = new SimpleAdapter(this,ListItem,
                 R.layout.list_item,
-                new String[]{"菜名","热量"},
-                new int[]{R.id.itemTitle,R.id.priceTitle});
+                new String[]{"菜品","热量","图片"},
+                new int[]{R.id.itemTitle,R.id.priceTitle,R.id.itemImage});
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String, String> clickedItem = ListItem.get(position);
+            String priceTitle = clickedItem.get("热量");
+            Intent intent = new Intent(MyListActivity.this, ContActivity.class);
+            intent.putExtra("priceTitle", priceTitle);
+             startActivity(intent);
     }
 }
 
